@@ -6,6 +6,7 @@ import com.drmtx.app.domain.reddit.RedditComment;
 import com.drmtx.app.repository.RedditRepository;
 import com.drmtx.app.repository.WordFrequencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ public class RedditCommentService {
         return requestId;
     }
 
-    public List<WordFrequency> findWordFrequencies(String requestId) {
-        return wordFrequencyRepository.findByRequestId(requestId);
+    public List<WordFrequency> findWordFrequencies(String requestId, int maximumElements) {
+        return wordFrequencyRepository.findByRequestIdOrderByTermCountDesc(requestId, new PageRequest(0, maximumElements));
     }
 }

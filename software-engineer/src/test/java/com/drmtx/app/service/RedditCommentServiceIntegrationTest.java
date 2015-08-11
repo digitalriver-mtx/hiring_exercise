@@ -29,7 +29,7 @@ public class RedditCommentServiceIntegrationTest {
         String requestId = redditCommentService
                 .importCommentWordFrequencies("https://www.reddit.com/r/java/comments/32pj67/java_reference_in_gta_v_beautiful/.json");
 
-        List<WordFrequency> wordFrequencies = redditCommentService.findWordFrequencies(requestId);
+        List<WordFrequency> wordFrequencies = redditCommentService.findWordFrequencies(requestId, 100);
         assertThat(wordFrequencies, is(not(empty())));
     }
 }

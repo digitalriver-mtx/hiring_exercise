@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.IntegrationTest;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
@@ -34,13 +35,13 @@ public class WordFrequencyIntegrationTest {
         WordFrequency writeWordFrequency = new WordFrequency(id, SOME_TERM, SOME_TERM_COUNT);
 
         // validate no entities for the id is found
-        assertThat(wordFrequencyRepository.findByRequestId(id).size(), is(0));
+        assertThat(wordFrequencyRepository.findByRequestIdOrderByTermCountDesc(id, new PageRequest(0, 100)).size(), is(0));
 
         // create
         wordFrequencyRepository.save(writeWordFrequency);
 
         // read
-        List<WordFrequency> readWordFrequencies = wordFrequencyRepository.findByRequestId(id);
+        List<WordFrequency> readWordFrequencies = wordFrequencyRepository.findByRequestIdOrderByTermCountDesc(id, new PageRequest(0, 100));
         assertThat(readWordFrequencies.size(), is(1));
 
         WordFrequency readWordFrequency = readWordFrequencies.get(0);
@@ -52,7 +53,7 @@ public class WordFrequencyIntegrationTest {
         readWordFrequency.setTermCount(SOME_OTHER_TERM_COUNT);
         wordFrequencyRepository.save(readWordFrequency);
 
-        readWordFrequencies = wordFrequencyRepository.findByRequestId(id);
+        readWordFrequencies = wordFrequencyRepository.findByRequestIdOrderByTermCountDesc(id, new PageRequest(0, 100));
         assertThat(readWordFrequencies.size(), is(1));
 
         readWordFrequency = readWordFrequencies.get(0);
@@ -63,6 +64,6 @@ public class WordFrequencyIntegrationTest {
         // delete
         wordFrequencyRepository.delete(readWordFrequency);
 
-        assertThat(wordFrequencyRepository.findByRequestId(id).size(), is(0));
+        assertThat(wordFrequencyRepository.findByRequestIdOrderByTermCountDesc(id, new PageRequest(0, 100)).size(), is(0));
     }
 }

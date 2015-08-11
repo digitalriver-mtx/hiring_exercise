@@ -4,7 +4,6 @@ import com.drmtx.app.domain.reddit.RedditComment;
 import com.drmtx.app.domain.reddit.RedditCommentNode;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.LinkedMultiValueMap;
@@ -15,7 +14,7 @@ import static org.springframework.http.HttpMethod.GET;
 
 /**
  * Repository to access the reddit comments endpoint.
- *
+ * <p>
  * https://github.com/reddit/reddit/wiki/API#rules
  */
 @Repository
