@@ -1,9 +1,11 @@
 package com.drmtx.app.domain.reddit;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Minimal model to access comments from the reddit comments endpoint.
@@ -24,7 +26,7 @@ public class RedditCommentData {
         return children;
     }
 
-    public void setChildren(RedditCommentNode[] children) {
+    public void setChildren(RedditCommentNode... children) {
         this.children = children;
     }
 
@@ -42,6 +44,39 @@ public class RedditCommentData {
 
     public void setBody(String body) {
         this.body = body;
+    }
+
+    /**
+     * Get comment bodies of all nodes, child and reply nodes .
+     *
+     * @return all comment bodies.
+     */
+    public List<String> bodies() {
+        List<String> bodies = new ArrayList<>();
+        addBody(bodies);
+        addBodyOfChildren(bodies);
+        addBodyOfReplies(bodies);
+        return bodies;
+    }
+
+    private void addBodyOfReplies(List<String> bodies) {
+        if (replies != null) {
+            bodies.addAll(replies.bodies());
+        }
+    }
+
+    private void addBodyOfChildren(List<String> bodies) {
+        if (children != null) {
+            for (RedditCommentNode child : children) {
+                bodies.addAll(child.bodies());
+            }
+        }
+    }
+
+    private void addBody(List<String> bodies) {
+        if (StringUtils.isNoneBlank(body)) {
+            bodies.add(body);
+        }
     }
 
     @Override
