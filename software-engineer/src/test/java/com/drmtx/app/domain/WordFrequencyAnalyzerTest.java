@@ -2,11 +2,15 @@ package com.drmtx.app.domain;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsMapContaining.hasEntry;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class WordFrequencyAnalyzerTest {
 
@@ -26,5 +30,21 @@ public class WordFrequencyAnalyzerTest {
         assertThat(wordFrequencies, hasEntry("over", 1));
         assertThat(wordFrequencies, hasEntry("lazy", 1));
         assertThat(wordFrequencies, hasEntry("dog", 1));
+    }
+
+    @Test
+    public void validateExpectedMappedFrequencies() {
+        WordFrequencyAnalyzer wordFrequencyAnalyzer = new WordFrequencyAnalyzer();
+
+        String id = UUID.randomUUID().toString();
+
+        List<WordFrequency> wordFrequencies = wordFrequencyAnalyzer.analyze(Arrays.asList("The", "the"), id);
+
+        assertThat(wordFrequencies.size(), is(1));
+
+        WordFrequency wordFrequency = wordFrequencies.get(0);
+        assertThat(wordFrequency.getRequestId(), is(id));
+        assertThat(wordFrequency.getTerm(), equalTo("the"));
+        assertThat(wordFrequency.getTermCount(), is(2));
     }
 }

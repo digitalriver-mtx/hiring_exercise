@@ -6,10 +6,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.summingInt;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.*;
 
 /**
  * Analyze the word frequency.
@@ -21,6 +20,12 @@ import static java.util.stream.Collectors.summingInt;
  */
 public class WordFrequencyAnalyzer {
 
+    /**
+     * Analyze a text for word frequencies.
+     *
+     * @param text the text to analyze
+     * @return the word frequencies
+     */
     public Map<String, Integer> analyze(String text) {
 
         // check for empty input
@@ -34,6 +39,27 @@ public class WordFrequencyAnalyzer {
         // calculate frequencies
         return words.stream()
                 .filter(StringUtils::isNotBlank)
-                .collect(groupingBy(Function.identity(), summingInt(e -> 1)));
+                .collect(groupingBy(identity(), summingInt(e -> 1)));
+    }
+
+    /**
+     * Analyze multiple texts for word frequencies.
+     *
+     * @param texts     the texts to analyze
+     * @param requestId the  requestId
+     * @return the word frequencies
+     */
+    public List<WordFrequency> analyze(List<String> texts, String requestId) {
+        // merge all texts
+        String allTexts = texts.stream()
+                .collect(joining(" "));
+
+        // analyze word frequencies
+        Map<String, Integer> frequencies = analyze(allTexts);
+
+        // map result to model
+        return frequencies.entrySet().stream()
+                .map(e -> new WordFrequency(requestId, e.getKey(), e.getValue()))
+                .collect(toList());
     }
 }
