@@ -15,6 +15,8 @@ import static org.springframework.http.HttpMethod.GET;
 
 /**
  * Repository to access the reddit comments endpoint.
+ *
+ * https://github.com/reddit/reddit/wiki/API#rules
  */
 @Repository
 public class RedditRepository {
