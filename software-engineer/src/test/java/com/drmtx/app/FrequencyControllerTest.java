@@ -55,7 +55,7 @@ public class FrequencyControllerTest {
         when(redditUrlRepository.save(expectedUrl)).thenReturn(savedUrl);
         when(mockWordCounter.countWords("json")).thenReturn(wordCounts);
 
-        assertEquals(new ResponseEntity(87L, HttpStatus.OK), controller.newFrequency("http://reddit.com"));
+        assertEquals(new ResponseEntity(87L, HttpStatus.CREATED), controller.newFrequency("http://reddit.com"));
         verify(mockWordCountRepository).save(wordCounts);
     }
 }

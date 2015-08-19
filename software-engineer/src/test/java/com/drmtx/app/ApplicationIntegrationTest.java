@@ -43,7 +43,9 @@ public class ApplicationIntegrationTest {
 
     @Test
     public void testFrequencyEndpoint() throws Exception {
-        mockMvc.perform(post("/frequency/new?url=https://www.reddit.com/r/java/comments/32pj67/java_reference_in_gta_v_beautiful/.json", "")).andExpect(status().isCreated());
+        mockMvc.perform(post("/frequency/new?url=https://www.reddit.com/r/java/comments/32pj67/java_reference_in_gta_v_beautiful/.json", ""))
+                .andExpect(status().isCreated())
+                .andExpect(content().string("1"));
     }
 
     @Test

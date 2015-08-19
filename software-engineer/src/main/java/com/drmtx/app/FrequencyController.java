@@ -45,7 +45,7 @@ public class FrequencyController {
 
         wordCountRepository.save(wordCounts);
 
-        return new ResponseEntity<>(redditUrl.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<>(savedRedditUrl.getId(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/frequency/{urlId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
