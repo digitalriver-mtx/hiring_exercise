@@ -3,13 +3,12 @@ package com.drmtx.app;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,8 +27,13 @@ public class FrequencyController {
     }
 
     @RequestMapping(value = "/frequency/{urlId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Map>> getFrequencies(@PathVariable Long urlId) {
-        Page<WordCount> wordCounts = wordCountRepository.findAllByUrlId(urlId, new PageRequest(0, 100));
+    public ResponseEntity<List<Map>> getFrequencies(@PathVariable Long urlId, @RequestParam() int count) {
+
+        if (count < 1) {
+            return new ResponseEntity<List<Map>>(HttpStatus.BAD_REQUEST);
+        }
+
+        Page<WordCount> wordCounts = wordCountRepository.findAllByUrlId(urlId, new PageRequest(0, count, new Sort(Sort.Direction.DESC, "count")));
 
         if (wordCounts.getTotalElements() == 0) {
             return new ResponseEntity<List<Map>>(HttpStatus.NOT_FOUND);

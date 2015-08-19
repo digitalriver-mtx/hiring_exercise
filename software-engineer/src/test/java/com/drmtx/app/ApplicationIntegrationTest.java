@@ -42,7 +42,7 @@ public class ApplicationIntegrationTest {
 
     @Test
     public void testFrequencyByIdEndpoint_invalidId() throws Exception {
-        mockMvc.perform(get("/frequency/1"))
+        mockMvc.perform(get("/frequency/1?count=10"))
                 .andExpect(status().isNotFound());
     }
 
@@ -72,5 +72,12 @@ public class ApplicationIntegrationTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().json("[ { \"word\": \"digital\", \"count\": 7 }, { \"word\": \"river\", \"count\": 2 } ]"));
 
+        mockMvc.perform(get("/frequency/88?count=1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json("[ { \"word\": \"digital\", \"count\": 7 } ]"));
+
+        mockMvc.perform(get("/frequency/88?count=0"))
+                .andExpect(status().isBadRequest());
     }
 }
