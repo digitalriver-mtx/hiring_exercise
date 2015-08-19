@@ -2,10 +2,12 @@ package com.drmtx.app;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
 
+@Component
 public class WordCounter {
     public Collection<WordCount> countWords(String inputJson) throws IOException {
         JsonNode jsonNode = new ObjectMapper().readTree(inputJson);

@@ -10,10 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
@@ -25,22 +22,30 @@ public class FrequencyController {
     @Autowired
     WordCountRepository wordCountRepository;
 
+    @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
     private WordCounter wordCounter;
+
+    @Autowired
     private RedditUrlRepository redditUrlRepository;
 
-    @RequestMapping(value = "/frequency/new", method = RequestMethod.GET)
-    public ResponseEntity<Long> newFrequency(String url) throws IOException {
+    @RequestMapping(value = "/frequency/new", method = RequestMethod.POST)
+    public ResponseEntity<Long> newFrequency(@RequestParam String url) throws IOException {
         ResponseEntity<String> json = restTemplate.getForEntity(url, String.class);
 
         Collection<WordCount> wordCounts = wordCounter.countWords(json.getBody());
 
-        wordCountRepository.save(wordCounts);
         RedditUrl redditUrl = new RedditUrl();
         redditUrl.setUrl(url);
-        redditUrl = redditUrlRepository.save(redditUrl);
+        final RedditUrl savedRedditUrl = redditUrlRepository.save(redditUrl);
 
-        return new ResponseEntity<>(redditUrl.getId(), HttpStatus.OK);
+        wordCounts.stream().forEach((wordCount -> wordCount.setUrlId(savedRedditUrl.getId())));
+
+        wordCountRepository.save(wordCounts);
+
+        return new ResponseEntity<>(redditUrl.getId(), HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/frequency/{urlId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

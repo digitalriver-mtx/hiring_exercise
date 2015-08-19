@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,9 +36,14 @@ public class ApplicationIntegrationTest {
     }
 
     @Test
-    public void testFrequencyEndpoint() throws Exception {
-        mockMvc.perform(get("/frequency/new"))
+    public void testFrequencyEndpoint_noUrl() throws Exception {
+        mockMvc.perform(post("/frequency/new"))
                 .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testFrequencyEndpoint() throws Exception {
+        mockMvc.perform(post("/frequency/new?url=https://www.reddit.com/r/java/comments/32pj67/java_reference_in_gta_v_beautiful/.json", "")).andExpect(status().isCreated());
     }
 
     @Test
