@@ -14,7 +14,7 @@ public class WordCounter {
         Map<String, WordCount> wordCounts = new HashMap<>();
 
         bodies.stream().forEach((words) -> {
-            Arrays.stream(words.split(" ")).map((word) -> { return word.toLowerCase().replaceAll("[\\.,\\?!]", ""); }).forEach((word) -> {
+            Arrays.stream(words.split("\\s+")).map((word) -> word.toLowerCase().replaceAll("[\\.,\\?!]", "")).forEach((word) -> {
                 WordCount currentWordCount;
                 if (wordCounts.containsKey(word)) {
                     currentWordCount = wordCounts.get(word);

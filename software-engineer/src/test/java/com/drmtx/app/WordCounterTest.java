@@ -64,4 +64,33 @@ public class WordCounterTest {
         assertTrue(wordCounts.contains(expectedCount2));
         assertTrue(wordCounts.contains(expectedCount3));
     }
+
+    @Test
+    public void testCountFromJson_whitespace() throws Exception {
+        String input = "[\n" +
+                "  {\n" +
+                "    \"data\": {\n" +
+                "    \"body\": \"Digital    River\\tInc\"" +
+                "    }\n" +
+                "  }\n" +
+                "]\n";
+
+        WordCount expectedCount1 = new WordCount();
+        expectedCount1.setWord("digital");
+        expectedCount1.setCount(1);
+        WordCount expectedCount2 = new WordCount();
+        expectedCount2.setWord("river");
+        expectedCount2.setCount(1);
+        WordCount expectedCount3 = new WordCount();
+        expectedCount3.setWord("inc");
+        expectedCount3.setCount(1);
+
+        Collection<WordCount> wordCounts = wordCounter.countWords(input);
+
+        assertEquals(3, wordCounts.size());
+        assertTrue(wordCounts.contains(expectedCount1));
+        assertTrue(wordCounts.contains(expectedCount2));
+        assertTrue(wordCounts.contains(expectedCount3));
+    }
+
 }
