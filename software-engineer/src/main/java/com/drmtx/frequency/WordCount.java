@@ -3,11 +3,15 @@ package com.drmtx.frequency;
 /**
  * Created by antivo on 8/27/15.
  */
-public class Point {
+
+/**
+ * Represents one word count in frequency analysis
+ */
+public class WordCount {
     private String word;
     private Long count;
 
-    public Point(String word, Long count) {
+    public WordCount(String word, Long count) {
         this.count = count;
         this.word = word;
     }

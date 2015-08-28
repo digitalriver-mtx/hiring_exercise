@@ -9,9 +9,19 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FrequencyService extends CrudRepository<Frequency, Long> {
+    /**
+     * Save frequency into the repository
+     * @param frequency frequency to be stored
+     * @return frequency object stored
+     */
     @Override
     Frequency save(Frequency frequency);
 
+    /**
+     * Find frequency by the id parameter in the repository
+     * @param id id of the search frequency
+     * @return frequency
+     */
     @Override
     Frequency findOne(Long id);
 }

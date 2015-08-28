@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import sun.applet.Main;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -33,20 +34,22 @@ public class Application {
 
             @Override
             public void contextInitialized(ServletContextEvent sce) {
+                _logger.info("NEXT RUN\n\n");
                 _logger.info("ServletContext initialized");
             }
 
             @Override
             public void contextDestroyed(ServletContextEvent sce) {
-                _logger.info("ServletContext destroyed");
+                _logger.info("ServletContext destroyed\n\n");
             }
 
         };
     }
 
-
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(Application.class, args);
+        SpringApplication app = new SpringApplication(Main.class);
+        app.setRegisterShutdownHook(true);
+        ConfigurableApplicationContext applicationContext = app.run(Application.class, args);
     }
 }
 

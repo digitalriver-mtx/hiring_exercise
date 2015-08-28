@@ -8,6 +8,10 @@ import java.util.Map;
 /**
  * Created by antivo on 8/27/15.
  */
+
+/**
+ * Represents word frequencies for one comment.
+ */
 @Entity
 public class Frequency {
     protected Frequency() {}

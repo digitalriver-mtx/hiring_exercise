@@ -28,6 +28,7 @@ public class RedditHttpClient implements RedditClient {
     @Override
     public Optional<String> getCommentsResponseFor(String redditCommentURL) throws IllegalArgumentException {
         assertRedditCommentUrl(redditCommentURL);
+        logger.info("Reddit Comment URL is well formed: " + redditCommentURL);
         return getResponse(redditCommentURL);
     }
 
@@ -52,6 +53,7 @@ public class RedditHttpClient implements RedditClient {
         try {
             HttpGet request = makeHTTPGet(url);
             HttpResponse response = client.execute(request);
+            logger.debug("received response");
             BufferedReader rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
             StringBuffer resultBuffer = new StringBuffer();
@@ -60,6 +62,7 @@ public class RedditHttpClient implements RedditClient {
                 resultBuffer.append(line);
             }
             String result = resultBuffer.toString();
+            logger.debug("Collected response into string");
             return Optional.of(result);
         } catch(IOException e) {
             logger.error(e.getMessage());

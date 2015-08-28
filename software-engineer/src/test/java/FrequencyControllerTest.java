@@ -21,9 +21,6 @@ public class FrequencyControllerTest {
     public void commentsToFrequency() {
         String url = "https://www.reddit.com/r/java/comments/32pj67/java_reference_in_gta_v_beautiful/.json";
 
-        System.out.println("!!!!!");
-        /*ResponseEntity<Long> re = applicationContext.getBean(FrequencyController.class).newFrequency(url);
-        System.out.println("no error");
-        System.out.println(re);*/
+        ResponseEntity<Long> re = applicationContext.getBean(FrequencyController.class).newFrequency(url);
     }
 }
