@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
         features = "features",
         glue = {"classpath:com/fatfoogoo/glue"},
         monochrome = true,
-        format = {"html:reports/results"})
+        format = {"html:target/reports/results"})
 
 public class TestRunner {
 

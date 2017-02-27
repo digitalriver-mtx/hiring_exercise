@@ -20,7 +20,7 @@ public class DriverHandler {
 
   public WebDriver getDriver() {
     if (this._driver == null) {
-      System.setProperty("webdriver.chrome.driver", "bin/chromedriver.exe");
+      System.setProperty("webdriver.chrome.driver", "src/test/resources/bin/chromedriver.exe");
       this._driver = new ChromeDriver();
     }
     return this._driver;
@@ -28,6 +28,7 @@ public class DriverHandler {
 
   public void closeDriver() {
     this._driver.quit();
+    this._driver = null;
   }
 
 }
